@@ -17,7 +17,7 @@ cv2.setMouseCallback('img', callback)
 
 location_data = []
 
-sourcePath = '/home/stephen/Desktop/drawers_full/'
+sourcePath = 'drawersFull/'
 paths = os.listdir(sourcePath)
 paths.sort()
 
