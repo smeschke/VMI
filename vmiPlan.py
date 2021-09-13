@@ -17,11 +17,12 @@ cv2.setMouseCallback('img', callback)
 
 location_data = []
 
-paths = os.listdir('/home/stephen/Desktop/drawers')
+sourcePath = '/home/stephen/Desktop/drawers_full/'
+paths = os.listdir(sourcePath)
 paths.sort()
 
 for drawerPath in paths:
-    img = cv2.imread('/home/stephen/Desktop/drawers/' + drawerPath)
+    img = cv2.imread(sourcePath + drawerPath)
     img = cv2.resize(img, (600,600))
     #print(drawerPath)
     #print(img.shape)
@@ -35,7 +36,7 @@ for drawerPath in paths:
         if len(click_list) == 2:
             #print(textString)           
             a,b = click_list
-            cv2.rectangle(img, a, b, (123,234,123), 2)
+            cv2.rectangle(img, a, b, (255,0,0), 12)
             org = (a[0]+b[0])/2, (a[1] + b[1])/2
             org = tuple(np.array(org, int))
             cv2.putText(img, textString, org, font, scale, color, thick, cv2.LINE_AA)
@@ -45,7 +46,7 @@ for drawerPath in paths:
             click_list = []
 
         cv2.rectangle(img, (100,550), (500,600), 0, -1)
-        cv2.putText(img, textString, (100,580), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
+        cv2.putText(img, textString, (100,580), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 2, cv2.LINE_AA)
         cv2.imshow('img', img)
         k = cv2.waitKey(1)
         # Wait, and allow the user to quit with the 'esc' key
