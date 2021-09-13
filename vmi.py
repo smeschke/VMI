@@ -48,7 +48,7 @@ for drawerNum in range(numDrawers):
     drawerLocations.append((drawerXstart, drawerXend, drawerTop, drawerTop + drawerHeight))
 
 # Get images of drawers
-sourcePath = '/home/stephen/Desktop/drawers_after_usage/'
+sourcePath = 'drawersAfterUse/'
 paths = os.listdir(sourcePath)
 paths.sort()
 drawerImages = []
@@ -175,7 +175,7 @@ print(order)
 # Import a data analytics package
 import pandas as pd
 # Read the VMI account data
-df = pd.read_csv('/home/stephen/Desktop/snackVMI.csv')
+df = pd.read_csv('snackVMI.csv')
 # Create a list for the pick ticket
 pickTicket = []
 # Iterate through each item in the order
@@ -194,12 +194,12 @@ for item in order:
     pickTicket.append(itemLine)
 h = ['Vendor p/n', 'Description', 'Qty. Ordered']
 reportDF = pd.DataFrame(pickTicket)
-reportDF.to_csv('/home/stephen/Desktop/pickTicket.csv', index=False, header=h)
+reportDF.to_csv('pickTicket.csv', index=False, header=h)
 
 # Import a data analytics package
 import pandas as pd
 # Read the VMI account data
-df = pd.read_csv('/home/stephen/Desktop/snackVMI.csv')
+df = pd.read_csv('snackVMI.csv')
 
 report = []
 # Iterate through each item in the order
@@ -228,5 +228,5 @@ for item in order:
 
 reportDF = pd.DataFrame(report)
 h = ['Customer p/n', 'Description', 'qty. on hand', 'min', 'max', 'qty. order', 'unit price']
-reportDF.to_csv('/home/stephen/Desktop/report.csv', index=False, header = h)
+reportDF.to_csv('report.csv', index=False, header = h)
 
