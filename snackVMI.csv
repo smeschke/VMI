@@ -1,0 +1,15 @@
+Supplier part #,vendor part #,description,max,min,uom,Cabinet #,Drawer #,Price
+01 001,100-100,heath,5,2,ea,snacks,1,0.75
+01 002,101-100,whoppers,5,2,ea,snacks,1,0.88
+01 003,102-100,reeses,10,5,ea,snacks,1,0.88
+01 004,103-100,kit kat,10,5,ea,snacks,2,1.25
+01 005,104-100,rolo,5,2,ea,snacks,2,1
+01 006,105-100,milk duds,5,2,ea,snacks,2,0.75
+03 001,100-300,chamomile tea,3,1,ea,snacks,4,0.25
+03 002,101-300,berry tea,3,1,ea,snacks,4,0.25
+03 003,102-300,peppermint tea,3,1,ea,snacks,4,0.25
+03 004,103-300,green tea,10,5,ea,snacks,4,0.2
+03 005,104-300,premium green tea,3,1,ea,snacks,4,0.25
+02 001,100-200,almonds,16,8,oz,snacks,3,1.08
+02 002,101-200,sunflower seeds,16,8,oz,snacks,3,0.56
+04 001,100-400,bananas,3,1,ea,snacks,5,0.75
