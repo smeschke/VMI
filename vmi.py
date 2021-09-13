@@ -7,14 +7,22 @@ import os
 #     Bin - a location where one type of item is stored
 #     Drawer - a horizontal plane containing one or more bins, located in a cabinet
 
-drawerImages = []
-for drawerPath in list(os.listdir('/home/stephen/Desktop/drawers')):
-    img = cv2.imread('/home/stephen/Desktop/drawers/' + drawerPath)
-    drawerImages.append(img)
-
 font, scale, color, thick = cv2.FONT_HERSHEY_SIMPLEX, 1, 255, 2
 
-location_data = [[('milk duds , 10, 20', [(59, 44), (562, 256)]), ('kit kat, 15, 30', [(49, 274), (527, 571)])], [('rolo, 10, 20', [(53, 43), (517, 276)]), ('heath,5,15', [(64, 297), (521, 533)])], [('whoppers,10,25', [(41, 66), (527, 259)]), ("reese's,15,25", [(33, 297), (504, 546)])], [('bulk almonds á(shavedá),.5lbs,1lbs.', [(146, 85), (397, 283)]), ('bulk sunflower seeds,.5,1', [(135, 313), (373, 522)])], [('cammomile tea,10 bags,20 bags', [(81, 103), (487, 275)]), ('berry tea, 10 bags, 20 bags', [(66, 298), (500, 508)])]]
+location_data = [[('reeses, 5, 10', [(291, 13), (595, 579)]),
+                  ('whoppers, 2, 5', [(16, 32), (264, 292)]),
+                  ('heath, 2, 5', [(14, 320), (268, 567)])],
+                 [('kit kat, 5, 10', [(283, 34), (592, 582)]),
+                  ('rolo, 2, 5', [(8, 38), (256, 277)]),
+                  ('milk duds, 2, 5', [(12, 289), (260, 564)])],
+                 [('green tea, 5, 10', [(391, 49), (586, 577)]),
+                  ('premium green tea, 1, 3', [(204, 51), (370, 279)]),
+                  ('chamomile tea, 1, 3', [(14, 37), (180, 292)]),
+                  ('peppermint tea, 1, 3', [(9, 306), (182, 581)]),
+                  ('berry tea, 1, 3', [(208, 300), (378, 566)])],
+                 [('almonds, 8, 16', [(63, 301), (292, 523)]),
+                  ('sunflower seeds, 8, 16', [(279, 107), (543, 318)])],
+                 [('bananas, 1, 3', [(29, 70), (576, 556)])]]
 
 # Mouse callback function
 global click_list
@@ -32,7 +40,7 @@ drawerXstart, drawerXend = 20, 350
 drawerTop = 25
 drawerHeight = 80
 drawerBufferY = 25
-drawerNames = ['Candy 1', 'Candy 2', 'Candy 3', 'Nuts and Seeds', 'Tea']
+drawerNames = ['Candy 1', 'Candy 2', 'Tea', 'Nuts and Seeds', 'Fruit']
 numDrawers = 5
 drawerLocations = []
 for drawerNum in range(numDrawers):
@@ -40,11 +48,12 @@ for drawerNum in range(numDrawers):
     drawerLocations.append((drawerXstart, drawerXend, drawerTop, drawerTop + drawerHeight))
 
 # Get images of drawers
-paths = os.listdir('/home/stephen/Desktop/drawers')
+sourcePath = '/home/stephen/Desktop/drawers_after_usage/'
+paths = os.listdir(sourcePath)
 paths.sort()
 drawerImages = []
 for drawerPath in paths:
-    img = cv2.imread('/home/stephen/Desktop/drawers/' + drawerPath)
+    img = cv2.imread(sourcePath + drawerPath)
     drawerImages.append(img)
 
 # Draw the file cabinet
@@ -54,7 +63,6 @@ for drawer, name in zip(drawerLocations, drawerNames):
     cv2.rectangle(bg, a, b, (0,255,255), 2)
     org = drawer[0]+50, drawer[2]+50
     cv2.putText(bg, name, org, font, scale, (0,255,255), thick, cv2.LINE_AA)
-
    
 # Number to define the position of the current drawer in the list drawers
 currentDrawer = 0
@@ -138,7 +146,7 @@ while True:
         orderString = 'New Input: ' + partName
         orderString += '  On Hand: ' + str(ohv)
         orderString += '  On Order: ' + str(ov)
-        cv2.putText(img, orderString, (100,800), font, 2, (255,2,255), 3)
+        cv2.putText(img, orderString, (100,800), font, 1.2, (255,2,255), 3)
         
     # Show frame    
     cv2.imshow('img', img)
@@ -163,4 +171,62 @@ while True:
 
 cv2.destroyAllWindows()
 print(order)
+
+# Import a data analytics package
+import pandas as pd
+# Read the VMI account data
+df = pd.read_csv('/home/stephen/Desktop/snackVMI.csv')
+# Create a list for the pick ticket
+pickTicket = []
+# Iterate through each item in the order
+for item in order:
+    # Iterate through each item in the VMI account
+    for vmiItem in df.values:
+        # Check if the description matches
+        if vmiItem[2] == item[0]:
+            itemLine = []
+            # Part #
+            itemLine.append(vmiItem[1])
+            # Description
+            itemLine.append(vmiItem[2])
+            # Quantity Ordered
+            itemLine.append(item[2])
+    pickTicket.append(itemLine)
+h = ['Vendor p/n', 'Description', 'Qty. Ordered']
+reportDF = pd.DataFrame(pickTicket)
+reportDF.to_csv('/home/stephen/Desktop/pickTicket.csv', index=False, header=h)
+
+# Import a data analytics package
+import pandas as pd
+# Read the VMI account data
+df = pd.read_csv('/home/stephen/Desktop/snackVMI.csv')
+
+report = []
+# Iterate through each item in the order
+for item in order:
+    # Iterate through each item in the VMI account
+    for vmiItem in df.values:
+        # Check if the description matches
+        if vmiItem[2] == item[0]:
+            reportLine = []
+            # Part #
+            reportLine.append(vmiItem[0])
+            # Description
+            reportLine.append(vmiItem[2])
+            # On Hand Quantity
+            reportLine.append(item[1])
+            # Min
+            reportLine.append(vmiItem[4])
+            # Max
+            reportLine.append(vmiItem[3])
+            # Quantity Ordered
+            reportLine.append(item[2])
+            # Price each
+            reportLine.append(vmiItem[8])
+
+    report.append(reportLine)
+
+reportDF = pd.DataFrame(report)
+h = ['Customer p/n', 'Description', 'qty. on hand', 'min', 'max', 'qty. order', 'unit price']
+reportDF.to_csv('/home/stephen/Desktop/report.csv', index=False, header = h)
 
